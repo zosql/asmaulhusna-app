@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>99 Names of Allah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .search-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+        }
+
+        .search-btn {
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: #5a6fd8;
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .name-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .name-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .name-number {
+            font-size: 18px;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .name-group {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .arabic-name {
+            font-size: 48px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+            line-height: 1.2;
+            font-family: 'Arial Unicode MS', 'Tahoma', sans-serif;
+        }
+
+        .transliteration {
+            font-size: 24px;
+            color: #667eea;
+            font-weight: 600;
+            margin: 15px 0;
+        }
+
+        .translation-section {
+            margin: 20px 0;
+        }
+
+        .translation-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .translation-label {
+            font-weight: 600;
+            color: #555;
+            width: 80px;
+            text-align: left;
+        }
+
+        .translation-text {
+            flex: 1;
+            text-align: right;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .page-indicator {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 16px;
+        }
+
+        .final-page {
+            display: none;
+            text-align: center;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .final-arabic {
+            font-size: 64px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 30px 0;
+            font-family: 'Arial Unicode MS', 'Tahoma', sans-serif;
+        }
+
+        .final-translation {
+            font-size: 20px;
+            margin: 15px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .final-transliteration {
+            font-size: 24px;
+            color: #667eea;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .countdown {
+            font-size: 18px;
+            color: #888;
+            margin-top: 30px;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .footer-line {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .name-card {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            .arabic-name {
+                font-size: 36px;
+            }
+
+            .transliteration {
+                font-size: 20px;
+            }
+
+            .translation-row {
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+
+            .translation-label {
+                width: 100%;
+            }
+
+            .translation-text {
+                text-align: center;
+            }
+
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-input, .search-btn {
+                width: 100%;
+            }
+
+            .final-arabic {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-bar">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search by transliteration or English translation..." id="searchInput">
+            <button class="search-btn" onclick="searchName()">Search</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="name-card" id="nameCard">
+            <div class="name-number" id="nameNumber">1 / 99</div>
+            <div class="name-group" id="nameGroup">Loading...</div>
+            <div class="arabic-name" id="arabicName">Loading...</div>
+            <div class="transliteration" id="transliteration">Loading...</div>
+            <div class="translation-section">
+                <div class="translation-row">
+                    <span class="translation-label">English:</span>
+                    <span class="translation-text" id="translationEn">Loading...</span>
+                </div>
+                <div class="translation-row">
+                    <span class="translation-label">Urdu:</span>
+                    <span class="translation-text" id="translationUrdu">Loading...</span>
+                </div>
+                <div class="translation-row">
+                    <span class="translation-label">Gujarati:</span>
+                    <span class="translation-text" id="translationGujarati">Loading...</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-btn" onclick="previousName()" id="prevBtn">Previous</button>
+                <div class="page-indicator" id="pageIndicator">1 of 99</div>
+                <button class="nav-btn" onclick="nextName()" id="nextBtn">Next</button>
+            </div>
+        </div>
+
+        <div class="final-page" id="finalPage">
+            <div class="final-arabic">لا إله إلا الله</div>
+            <div class="final-translation"><strong>Urdu:</strong> اللہ کے سوا کوئی معبود نہیں</div>
+            <div class="final-translation"><strong>Gujarati:</strong> અલ્લાહ સિવાય બીજો કોઈ ઇબાદત માટે લાયક નથી</div>
+            <div class="final-transliteration">Lā ilāha illā Allāh</div>
+            <div class="final-translation"><strong>English:</strong> There is no god but Allah</div>
+            <div class="countdown" id="countdown">Returning to first name in 10 seconds...</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-line">Built by Zoyeb Batliwala from India</div>
+        <div class="footer-line">Seeking prayers from fellow believers 🤲</div>
+    </div>
+
+    <script>
+        // CSV data - parsing the provided CSV content
+        const csvData = `Name Group,No,Original Arabic,Translation Urdu,Translation Gujarati,Transliteration En,Translation En
+Forgiveness & Mercy Name,1,الرَّحْمٰنُ,رحم کرنے والا,દયાવાન,Ar-Rehmaan,The Entirely Merciful
+Forgiveness & Mercy Name,2,الرَّحِيمُ,مہربان,કૃપાળુ,Ar-Raheem,The Especially Merciful
+Forgiveness & Mercy Name,3,الْعَفُوُّ,معاف کرنے والا,માફ કરનાર,Al-Afuww,The Supreme Pardoner
+Forgiveness & Mercy Name,4,الْغَفُورُ,بخشنے والا,ક્ષમાશીલ,Al-Ghafoor,The Great Forgiver
+Forgiveness & Mercy Name,5,الْغَفَّارُ,بخشنے والا گناہ,સતત ક્ષમાકર્તા,Al-Ghaffaar,The Constant Forgiver
+Forgiveness & Mercy Name,6,التَّوَّابُ,توبہ قبول کرنے والا,તોબો સ્વીકારનાર,At-Tawwaab,The Ever-Acceptor of Repentance
+Power Name,7,الضَّارُّ,نقصان پہنچانے والا,નુકસાન પહોંચાડનાર,Ad-Dhaarr,The Distressor
+Power Name,8,الْجَبَّارُ,سب پر زورآور,સર્વશક્તિમાન,Al-Jabbaar,The Compeller
+Power Name,9,الْقَادِرُ,قدرت والا,સમર્થ,Al-Qaadir,"The All-Powerful, The Omnipotent"
+Power Name,10,الْمُقْتَدِرُ,بڑی قدرت کے مالک,મહાન શક્તિશાળી,Al-Muqtadir,The Creator of All Power
+Power Name,11,الْقَوِيُّ,بہت قوت والا,બળશાળી,Al-Qawiyy,The All-Strong
+Power Name,12,الْمَتِينُ,مضبوط,મજબૂત,Al-Mateen,The Firm One
+Power Name,13,الْقَهَّارُ,سب پر غالب,સર્વોપરી,Al-Qahhar,The Subduer
+Power Name,14,الْمُنْتَقِمُ,بدلہ لینے والا,બદલો લેનાર,Al-Muntaqim,The Avenger
+Kindness & Generosity Names,15,الرَّؤُوفُ,نرمی کرنے والا,દયાળુ,Ar-Ra'uuf,The Most Kind
+Kindness & Generosity Names,16,الْكَرِيمُ,کرامت والا,કરીમ,Al-Kareem,The Most Generous
+Kindness & Generosity Names,17,الْحَلِيمُ,حلم والا,ધૈર્યવાન,Al-Haleem,The Most Forbearing
+Kindness & Generosity Names,18,الْوَدُودُ,محبت کرنے والا,પ્રેમાળ,Al-Wadood,The Most Loving
+Kindness & Generosity Names,19,الشَّكُورُ,قدردان,કૃતજ્ઞ,Ash-Shakoor,The Most Appreciative
+Kindness & Generosity Names,20,اللَّطِيفُ,باریک بین کرم والا,સૂક્ષ્મદર્શી,Al-Lateef,"The Most Gentle, The Subtle One"
+Kindness & Generosity Names,21,الصَّبُورُ,بہت صبر کرنے والا,ધૈર્યશીલ,As-Saboor,The Most Patient
+Guide Name,22,الْهَادِي,ہدایت دینے والا,માર્ગદર્શક,Al-Haadi,The Guide
+Guide Name,23,الرَّشِيدُ,ہدایت دینے والا,સુપથદર્શક,Ar-Rasheed,"The Guide, The Infallible Teacher"
+Guide Name,24,الْمُهَيْمِنُ,کریگران,સંરક્ષક,Al-Muhaimin,"The Guardian, The Overseer"
+Guide Name,25,الْوَلِيُّ,مددگار,મિત્ર,Al-Waliyy,The Protective Friend
+Guide Name,26,الْوَالِي,حکمران,શાસક,Al-Waali,The Sole Governor
+Guide Name,27,الْحَكِيمُ,بڑی حکمت والا,જ્ઞાની,Al-Hakeem,The Most Wise
+Honor & Glory Name,28,ذُو الْجَلَالِ وَالْإِكْرَامِ,عظمت اور عزت والا کرامیں,મહિમા અને સન્માનવાળા,Dhul-Jalaal-wal-Ikraam,Lord of Majesty & Generosity
+Honor & Glory Name,29,مَالِكُ الْمُلْكِ,سلطنت کا مالک,રાજ્યનો માલિક,Maalik-ul-Mulk,The Owner of the Kingdom
+Honor & Glory Name,30,الْعَظِيمُ,عظمت والا,મહાન,Al-Azeem,"The Magnificent, The Infinite"
+Honor & Glory Name,31,الْعَزِيزُ,زبردست,પરાક્રમી,Al-Azeez,The Almighty
+Honor & Glory Name,32,الْجَلِيلُ,بزرگ شان والا,ગૌરવશાળી,Al-Jaleel,The Majestic
+Honor & Glory Name,33,الْحَمِيدُ,تعریف کے لائق,પ્રશંસનીય,Al-Hameed,The Praiseworthy
+Honor & Glory Name,34,الْمَجِيدُ,بزرگ,મહિમાવાન,Al-Majeed,The Glorious
+Honor & Glory Name,35,الْمَلِكُ,حقیقی بادشاہ,રાજા,Al-Maalik,The Owner of the Dominion
+Honor & Glory Name,36,الْمُذِلُّ,ذلت دینے والا,અપમાન આપનાર,Al-Mudhill,The Giver of Dishonor
+Honor & Glory Name,37,الْمُعِزُّ,عزت دینے والا,સન્માન આપનાર,Al-Muizz,The Giver of Honor
+Source Name,38,الْمَاجِدُ,عزت دار,સન્માનિત,Al-Maajid,The Source of All Honor
+Source Name,39,الْقُدُّوسُ,پاک ذات,પવિત્ર,Al-Quddus,The Absolutely Pure
+Source Name,40,الْمُؤْمِنُ,امن دینے والا,શાંતિ આપનાર,Al-Mumin,The One who Gives Iman
+Source Name,41,الْبَرُّ,احسان کرنے والا,ઉપકારક,Al-Baarr,The Source of All Goodness
+Source Name,42,النُّورُ,نور ہدایت بخش,પ્રકાશ,An-Nur,"The Light, The Illuminator"
+Source Name,43,السَّلَامُ,سلامتی والا,શાંતિવાළા,As-Salaam,The Source of Peace & Security
+Creationary Name,44,الْخَالِقُ,پیدا کرنے والا,સર્જનહાર,Al-Khaliq,"The Creator, The Maker"
+Creationary Name,45,الْبَارِئُ,تخلیق کرنے والا,નિર્માતા,Al-Baari,The Evolver
+Creationary Name,46,الْبَدِيعُ,بدیع,અનુપમ સર્જક,Al-Badi,The Incomparable Originator
+Creationary Name,47,الْمُبْدِئُ,ابتدا کرنے والا,આરંભકર્તા,Al-Mubdi,"The Initiator, The Originator"
+Creationary Name,48,الْمُصَوِّرُ,صورت بنانے والا,આકાર આપનાર,Al-Musawwir,The Fashioner
+Creationary Name,49,الْبَاعِثُ,اٹھانے والا,પુનરુત્થાનકર્તા,Al-Ba'ith,The Infuser of New Life
+Creationary Name,50,الْمُمِيتُ,موت دینے والا,મૃત્યુ આપનાર,Al-Mumeet,The Creator of Death
+Creationary Name,51,الْمُحْيِي,زندہ کرنے والا,જીવન આપનાર,Al-Muhyi,The Giver of Life
+Creationary Name,52,الْمُعِيدُ,دوبارہ کرنے والا,પુનરાવર્તક,Al-Mu'id,The Restorer
+Creationary Name,53,الْحَيُّ,زندہ,જીવંત,Al-Hayy,The Ever-Living
+Creationary Name,54,الْقَيُّومُ,قائم رہنے والا,સ્વયંભૂ,Al-Qayyuum,The Self-Subsisting
+High Status Name,55,الْعَلِيُّ,بلند,ઉચ્ચ,Al-Ali,"The Most High, The Exalted"
+High Status Name,56,الْكَبِيرُ,بڑا,મહાન,Al-Kabeer,The Most Great
+High Status Name,57,الْمُتَعَالِي,بلند مرتبہ,ઉન્નત,Al-Muta'ali,The Self-Exalted
+High Status Name,58,الْمُتَكَبِّرُ,بڑی شان والا,ગર્વિત,Al-Muta'kabbir,The Supreme
+High Status Name,59,الْوَاسِعُ,وسعت والا,વિશાળ,Al-Waasi,"The Boundless, The All-Encompassing"
+Giver/Restrictor Name,60,الْوَهَّابُ,بہت دینے والا,દાતા,Al-Wahhab,The Supreme Bestower
+Giver/Restrictor Name,61,الرَّزَّاقُ,رزق دینے والا روزی,રોજીરોટી આપનાર,Ar-Razzaq,The Provider
+Giver/Restrictor Name,62,الْقَابِضُ,روزی تنگ کرنے والا,સંકુચિત કરનાર,Al-Khabidh,The Withholder
+Giver/Restrictor Name,63,الْمُقِيتُ,قدرت والا,પોષક,Al-Muqeet,The Sustainer
+Giver/Restrictor Name,64,الْبَاسِطُ,روزی فراخ کرنے والا,વિસ્તારક,Al-Baasit,The Extender
+Giver/Restrictor Name,65,الْخَافِضُ,پست کرنے والا,નીચે કરનાર,Al-Khafidh,The Abaser
+Giver/Restrictor Name,66,الرَّافِعُ,بلند کرنے والا,ઉંચે કરનાર,Ar-Rafiyy,The Exalter
+Giver/Restrictor Name,67,الْمَانِعُ,روکنے والا,અવરોધક,Al-Maani,The Withholder
+Giver/Restrictor Name,68,الْغَنِيُّ,بے نیاز,સ્વયંપૂર્ણ,Al-Ghaniyy,"The Self-Sufficient, The Wealthy"
+Giver/Restrictor Name,69,الْمُغْنِي,بے نیاز کرنے والا,સમૃદ્ધિ આપનાર,Al-Mughni,The Enricher
+Giver/Restrictor Name,70,النَّافِعُ,فائدہ پہنچانے والا,ફાયદાકારક,An-Naafi,"The Benefactor, The Propitious"
+Active Role Name,71,الْحَفِيظُ,حفاظت کرنے والا,રક્ષક,Al-Hafidh,The Preserver
+Active Role Name,72,السَّمِيعُ,سب کچھ سننے والا,સર્વશ્રોતા,As-Samee,The All-Hearing
+Active Role Name,73,الْبَصِيرُ,سب کچھ دیکھنے والا,સર્વદ્રષ્ટા,Al-Baseer,The All-Seeing
+Active Role Name,74,الرَّقِيبُ,نگہبان,રખેવાળ,Ar-Raqeeb,The Ever-Present
+Active Role Name,75,الْمُجِيبُ,دعا قبول کرنے والا,પ્રાર્થના સ્વીકારનાર,Al-Mujeeb,The Responsive One
+Active Role Name,76,الشَّهِيدُ,ہر جگہ حاضر,સાક્ષી,Ash-Shaheed,The All-and-Ever Witnessing
+Active Role Name,77,الْوَاجِدُ,بے پرواہ,શોધનાર,Al-Waajid,The Perceiver
+Active Role Name,78,الْعَلِيمُ,بہت علم والا,સર્વજ્ઞ,Al-Aleem,The All-Knowing
+Active Role Name,79,الْخَبِيرُ,باخبر,જાણકાર,Al-Khabeer,The All-Aware
+Active Role Name,80,الظَّاهِرُ,ظاہر,પ્રગટ,Az-Zaahir,The Manifest
+Active Role Name,81,الْبَاطِنُ,چھپا ہوا,છુપાયેલા,Al-Baatin,"The Hidden, Knower of the Hidden"
+Legal/Accounting Name,82,الْعَدْلُ,انصاف کرنے والا,ન્યાયી,Al-Adl,The Utterly Just
+Legal/Accounting Name,83,الْحَكَمُ,فیصلہ کرنے والا,ન્યાયાધીશ,Al-Hakam,The Impartial Judge
+Legal/Accounting Name,84,الْحَقُّ,برحق,સત્ય,Al-Haqq,The Absolute Truth
+Legal/Accounting Name,85,الْوَكِيلُ,کارساز,વકીલ,Al-Wakeel,"The Trustee, The Disposer of Affairs"
+Legal/Accounting Name,86,الْحَسِيبُ,حساب لینے والا,હિસાબ લેનાર,Al-Haseeb,The Reckoner
+Legal/Accounting Name,87,الْمُقْسِطُ,انصاف کرنے والا,ન્યાયકર્તા,Al-Muqsit,The Just One
+Legal/Accounting Name,88,الْمُحْصِي,شمار کرنے والا,ગણતરી કરનાર,Al-Muhsee,"The All-Enumerating, The Counter"
+Legal/Accounting Name,89,الْوَارِثُ,وارث,વારસદાર,Al-Waarith,The Inheritor
+Unique Name,90,الْأَحَدُ,یکتا,એક,Al-Ahad,"The Absolute, The Indivisible"
+Unique Name,91,الْوَاحِدُ,ایک,અદ્વિતીય,Al-Waahid,The One
+Unique Name,92,الصَّمَدُ,بے نیاز,નિરપેક્ષ,As-Samad,"The Self-Sufficient, The Impregnable"
+Unique Name,93,الْفَتَّاحُ,فیصلہ کرنے والا,ખોલનાર,Al-Fattah,The Supreme Opener
+Unique Name,94,الْأَوَّلُ,سب سے پہلے,પ્રથમ,Al-Awwal,The First
+Unique Name,95,الْآخِرُ,سب سے آخر,અંતિમ,Al-Aakhir,The Last
+Unique Name,96,الْمُؤَخِّرُ,پیچھے کرنے والا,વિલંબ કરનાર,Al-Mua'khkhir,The Delayer
+Unique Name,97,الْمُقَدِّمُ,آگے بڑھانے والا,આગળ વધારનાર,Al-Muqaddim,The Expediter
+Unique Name,98,الْبَاقِي,ہمیشہ باقی رہنے والا,શાશ્વત,Al-Baaqi,The Ever-Lasting
+Unique Name,99,الْجَامِعُ,جمع کرنے والا,એકત્રિત કરનાર,Al-Jamiyy,"The Gatherer, The Uniter"`;
+
+        let names = [];
+        let currentIndex = 0;
+
+        // Parse CSV data
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',');
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const obj = {};
+                headers.forEach((header, index) => {
+                    obj[header.trim()] = values[index] ? values[index].trim() : '';
+                });
+                data.push(obj);
+            }
+            return data;
+        }
+
+        // Navigation functions
+        function nextName() {
+            if (currentIndex < names.length - 1) {
+                displayName(currentIndex + 1);
+            } else {
+                showFinalPage();
+            }
+        }
+
+        function previousName() {
+            if (currentIndex > 0) {
+                displayName(currentIndex - 1);
+            }
+        }
+
+        // Search function
+        function searchName() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!searchTerm) return;
+            
+            // Search in transliteration and English translation
+            for (let i = 0; i < names.length; i++) {
+                const name = names[i];
+                const transliteration = name['Transliteration En'].toLowerCase();
+                const translation = name['Translation En'].toLowerCase();
+                
+                if (transliteration.includes(searchTerm) || translation.includes(searchTerm)) {
+                    displayName(i);
+                    document.getElementById('searchInput').value = '';
+                    return;
+                }
+            }
+            
+            // If no match found, show alert
+            alert('No matching name found. Please try a different search term.');
+        }
+
+        // Initialize the app
+        function init() {
+            names = parseCSV(csvData);
+            displayName(0);
+        }
+
+        // Display a specific name
+        function displayName(index) {
+            if (index < 0 || index >= names.length) return;
+            
+            currentIndex = index;
+            const name = names[index];
+            
+            document.getElementById('nameNumber').textContent = `${parseInt(name.No)} / 99`;
+            document.getElementById('nameGroup').textContent = name['Name Group'];
+            document.getElementById('arabicName').textContent = name['Original Arabic'];
+            document.getElementById('transliteration').textContent = name['Transliteration En'];
+            document.getElementById('translationEn').textContent = name['Translation En'];
+            document.getElementById('translationUrdu').textContent = name['Translation Urdu'];
+            document.getElementById('translationGujarati').textContent = name['Translation Gujarati'];
+            document.getElementById('pageIndicator').textContent = `${parseInt(name.No)} of 99`;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = false;
+            
+            // Show name card, hide final page
+            document.getElementById('nameCard').style.display = 'block';
+            document.getElementById('finalPage').style.display = 'none';
+        }
+
+        // Show final page
+        function showFinalPage() {
+            document.getElementById('nameCard').style.display = 'none';
+            document.getElementById('finalPage').style.display = 'block';
+            
+            // Start countdown
+            let countdown = 10;
+            const countdownElement = document.getElementById('countdown');
+            
+            const timer = setInterval(() => {
+                countdown--;
+                countdownElement.textContent = `Returning to first name in ${countdown} seconds...`;
+                
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    displayName(0);
+                }
+            }, 1000);
+        }
+
+        // Add enter key support for search
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchName();
+                }
+            });
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') {
+                    previousName();
+                } else if (e.key === 'ArrowRight') {
+                    nextName();
+                }
+            });
+        });

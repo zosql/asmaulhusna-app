@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap');
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(210, 11%, 15%);
+  --muted: hsl(150, 25%, 95%);
+  --muted-foreground: hsl(215, 16%, 47%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(210, 11%, 15%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(210, 11%, 15%);
+  --border: hsl(170, 15%, 85%);
+  --input: hsl(170, 15%, 85%);
+  --primary: hsl(175, 85%, 15%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(150, 25%, 95%);
+  --secondary-foreground: hsl(210, 11%, 15%);
+  --accent: hsl(150, 25%, 95%);
+  --accent-foreground: hsl(210, 11%, 15%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(175, 85%, 15%);
+  --radius: 0.75rem;
+  
+  /* Custom Islamic theme colors */
+  --teal-primary: hsl(186, 75%, 18%);
+  --teal-secondary: hsl(186, 70%, 22%);
+  --gold: hsl(45, 75%, 52%);
+  --mint: hsl(165, 45%, 92%);
+  --cream: hsl(45, 45%, 96%);
+  --charcoal: hsl(210, 22%, 22%);
+  --muted-gray: hsl(215, 14%, 52%);
+}
+
+.dark {
+  --background: hsl(210, 11%, 4%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(210, 11%, 8%);
+  --muted-foreground: hsl(215, 16%, 65%);
+  --popover: hsl(210, 11%, 4%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(210, 11%, 4%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(210, 11%, 15%);
+  --input: hsl(210, 11%, 15%);
+  --primary: hsl(175, 85%, 25%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(210, 11%, 8%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(210, 11%, 8%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(175, 85%, 25%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+/* Custom Islamic patterns and styles */
+.islamic-pattern {
+  background-image: radial-gradient(circle at 1px 1px, rgba(11, 75, 79, 0.03) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+.arabic-text {
+  font-family: 'Amiri', serif;
+  direction: rtl;
+  text-align: center;
+  font-feature-settings: "liga" 1, "kern" 1;
+  text-rendering: optimizeLegibility;
+}
+
+.search-highlight {
+  background-color: hsl(45, 100%, 92%);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Smooth transitions */
+.name-card-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.name-card-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.name-card-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.name-card-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Loading shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Scrollbar styling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gentleBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+.animate-gentle-bounce {
+  animation: gentleBounce 0.6s ease-in-out;
+}
